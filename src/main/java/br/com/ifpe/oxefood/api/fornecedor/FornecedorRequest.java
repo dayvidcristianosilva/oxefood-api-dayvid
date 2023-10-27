@@ -38,7 +38,8 @@ public class FornecedorRequest {
                 .endereco(endereco)
                 .valorMercado(valorMercado)
                 .contatoFornecedor(contatoFornecedor)
-                .paginaWeb(paginaWeb);
+                .paginaWeb(paginaWeb)
+                .build();
     }
 
 }

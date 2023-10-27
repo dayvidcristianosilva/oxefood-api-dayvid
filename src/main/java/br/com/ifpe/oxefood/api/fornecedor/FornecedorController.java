@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ifpe.oxefood.modelo.fornecedor.Fornecedor;
 import br.com.ifpe.oxefood.modelo.fornecedor.FornecedorService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 
 @RestController
@@ -31,12 +34,21 @@ public class FornecedorController {
         Fornecedor fornecedor = fornecedorService.save(request.build());
         return new ResponseEntity<Fornecedor>(fornecedor, HttpStatus.CREATED);
     }
+    @ApiOperation(value = "Serviço responsável por listar todos os fornecedores do sistema.")
 
     @GetMapping
     public List<Fornecedor> findAll() {
   
         return fornecedorService.findAll();
     }
+   @ApiOperation(value = "Serviço responsável por obter um fornecedor referente ao Id passado na URL.")
+   @ApiResponses(value = {
+       @ApiResponse(code = 200, message = "Retorna  o fornecedor."),
+       @ApiResponse(code = 401, message = "Acesso não autorizado."),
+       @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso."),
+       @ApiResponse(code = 404, message = "Não foi encontrado um registro para o Id informado."),
+       @ApiResponse(code = 500, message = "Foi gerado um erro no servidor."),
+   })
 
     @GetMapping("/{id}")
     public Fornecedor findById(@PathVariable Long id) {
