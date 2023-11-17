@@ -19,8 +19,9 @@ public class ProdutoService {
         produto.setDataCriacao(LocalDate.now());
         return repository.save(produto);
     }
-  public List<Produto> findAll() {
-  
+
+    public List<Produto> findAll() {
+
         return repository.findAll();
     }
 
@@ -28,5 +29,30 @@ public class ProdutoService {
 
         return repository.findById(id).get();
     }
-  }
 
+    public List<Produto> filtrar(String codigo, String titulo, Long idCategoria) {
+
+        List<Produto> listaProdutos = repository.findAll();
+
+        if ((codigo != null && !"".equals(codigo)) &&
+                (titulo == null || "".equals(titulo)) &&
+                (idCategoria == null)) {
+            listaProdutos = repository.consultarPorCodigo(codigo);
+        } else if ((codigo == null || "".equals(codigo)) &&
+                (titulo != null && !"".equals(titulo)) &&
+                (idCategoria == null)) {
+            listaProdutos = repository.findByTituloContainingIgnoreCaseOrderByTituloAsc(titulo);
+        } else if ((codigo == null || "".equals(codigo)) &&
+                (titulo == null || "".equals(titulo)) &&
+                (idCategoria != null)) {
+            listaProdutos = repository.consultarPorCategoria(idCategoria);
+        } else if ((codigo == null || "".equals(codigo)) &&
+                (titulo != null && !"".equals(titulo)) &&
+                (idCategoria != null)) {
+            listaProdutos = repository.consultarPorTituloECategoria(titulo, idCategoria);
+        }
+
+        return listaProdutos;
+    }
+
+}
