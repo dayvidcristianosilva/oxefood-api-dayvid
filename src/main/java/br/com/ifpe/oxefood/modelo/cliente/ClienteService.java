@@ -8,10 +8,14 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.ifpe.oxefood.modelo.acesso.UsuarioService;
 import br.com.ifpe.oxefood.modelo.mensagens.EmailService;
 
 @Service
 public class ClienteService {
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Autowired
     private EmailService emailService;
@@ -21,7 +25,7 @@ public class ClienteService {
 
     @Transactional
     public Cliente save(Cliente cliente) {
-
+        usuarioService.save(cliente.getUsuario());
         cliente.setHabilitado(Boolean.TRUE);
         cliente.setVersao(1L);
         cliente.setDataCriacao(LocalDate.now());

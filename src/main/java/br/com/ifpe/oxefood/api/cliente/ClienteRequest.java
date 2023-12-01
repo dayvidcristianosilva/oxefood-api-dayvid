@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import br.com.ifpe.oxefood.modelo.acesso.Usuario;
 import br.com.ifpe.oxefood.modelo.cliente.Cliente;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,9 +23,12 @@ public class ClienteRequest {
 
     private String nome;
 
-    @NotBlank(message = "O Email é de preenchimento obrigatório")
+    @NotBlank(message = "O e-mail é de preenchimento obrigatório")
     @Email
     private String email;
+
+    @NotBlank(message = "A senha é de preenchimento obrigatório")
+    private String password;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataNascimento;
@@ -38,6 +42,7 @@ public class ClienteRequest {
     public Cliente build() {
 
         return Cliente.builder()
+        .usuario(buildUsuario())
             .email(email)
             .nome(nome)
             .dataNascimento(dataNascimento)
@@ -45,6 +50,14 @@ public class ClienteRequest {
             .foneCelular(foneCelular)
             .foneFixo(foneFixo)
             .build();
+    }
+public Usuario buildUsuario() {
+	
+	return Usuario.builder()
+		.username(email)
+		.password(password)
+		.roles(Arrays.asList(Usuario.ROLE_CLIENTE))
+		.build();
     }
 
 }
