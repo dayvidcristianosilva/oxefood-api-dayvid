@@ -1,6 +1,6 @@
 package br.com.ifpe.oxefood.modelo.acesso;
 
-public class Usuario {
+import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,7 +8,9 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,11 +38,13 @@ public class Usuario extends EntidadeNegocio implements UserDetails {
 
     private static final long serialVersionUID = -2660334839251150243L;
 
-    public static final String ROLE_CLIENTE = "CLIENTE";
-    public static final String ROLE_EMPRESA = "EMPRESA";
+    public static final String ROLE_CLIENTE = "CLIENTE"; //Realizar compras no sistema
+    public static final String ROLE_EMPRESA = "EMPRESA"; //READ, DELETE, WRITE, UPDATE.
+    public static final String ROLE_EMPRESA_USER = "EMPRESA_USER"; //READ, WRITE, UPDATE.
 
     @Column(nullable = false, unique = true)
     private String username;
+
     @JsonIgnore
     @Column(nullable = false)
     private String password;
@@ -71,6 +75,5 @@ public class Usuario extends EntidadeNegocio implements UserDetails {
     public boolean isEnabled() {
         return getHabilitado();
     }
-}
 
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class FornecedorService {
+    
     @Autowired
     private FornecedorRepository repository;
 
@@ -19,17 +20,22 @@ public class FornecedorService {
         fornecedor.setHabilitado(Boolean.TRUE);
         fornecedor.setVersao(1L);
         fornecedor.setDataCriacao(LocalDate.now());
+
         return repository.save(fornecedor);
     }
 
     public List<Fornecedor> findAll() {
-
+  
         return repository.findAll();
     }
 
-    public Fornecedor findById(Long id) {
+    @Transactional
+    public void delete(Long id) {
 
-        return repository.findById(id).get();
+        Fornecedor fornecedor = repository.findById(id).get();
+        fornecedor.setHabilitado(Boolean.FALSE);
+        fornecedor.setVersao(fornecedor.getVersao() + 1);
+
+        repository.save(fornecedor);
     }
-
 }
